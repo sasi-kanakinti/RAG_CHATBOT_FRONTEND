@@ -1,13 +1,22 @@
 //@ts-nocheck
-import axios from "axios";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
-const API_URL = "http://backend:8000/chat";
+export async function sendMessage(query, history) {
+    const response = await fetch(`${API_BASE_URL}/chat`, {
+    method: "POST",
+    headers: {
+        "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+        query,
+        history,
+    }),
+    });
 
-export async function sendMessageToBackend(question, history) {
-const response = await axios.post(API_URL, {
-    query: question,
-    history: history,
-});
+    if (!response.ok) {
+        throw new Error("API request failed");
+    }
 
-return response.data;
+    const data = await response.json();
+    return data; // return full object, NOT only data.response
 }

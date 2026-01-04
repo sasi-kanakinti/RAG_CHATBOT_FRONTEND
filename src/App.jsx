@@ -1,6 +1,6 @@
 //@ts-nocheck
 import { useState, useEffect } from "react";
-import { sendMessageToBackend } from "./api/chatApi";
+import { sendMessage } from "./api/chatApi";
 import ChatWindow from "./components/ChatWindow";
 import ChatInput from "./components/ChatInput";
 
@@ -10,21 +10,24 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [theme, setTheme] = useState("dark");
 
+  // Apply theme to body
   useEffect(() => {
     document.body.className = theme;
   }, [theme]);
-
 
   const handleSend = async () => {
     if (!input.trim() || loading) return;
 
     const userMsg = { role: "user", text: input };
-    setMessages((prev) => [...prev, userMsg]);
+    const updatedHistory = [...messages, userMsg];
+
+    setMessages(updatedHistory);
     setInput("");
     setLoading(true);
 
     try {
-      const data = await sendMessageToBackend(input, messages);
+      const data = await sendMessage(input, updatedHistory);
+
       setMessages((prev) => [
         ...prev,
         {
@@ -34,13 +37,13 @@ function App() {
             data.answer ||
             data.output ||
             data.content ||
-            "No response",
+            "No response from server",
         },
       ]);
-    } catch {
+    } catch (err) {
       setMessages((prev) => [
         ...prev,
-        { role: "assistant", text: "Error contacting backend" },
+        { role: "assistant", text: err+"Error contacting backend" },
       ]);
     } finally {
       setLoading(false);
@@ -77,7 +80,8 @@ const styles = {
   container: {
     width: "100%",
     maxWidth: "600px",
-    height: "100%",
+    height: "100vh",
+    margin: "0 auto",
     display: "flex",
     flexDirection: "column",
     backgroundColor: "var(--bg-main)",
@@ -88,6 +92,7 @@ const styles = {
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
+    borderBottom: "1px solid var(--border)",
   },
   toggle: {
     padding: "6px 12px",
