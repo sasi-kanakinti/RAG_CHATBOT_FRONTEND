@@ -10,7 +10,6 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [theme, setTheme] = useState("dark");
 
-  // Apply theme to body
   useEffect(() => {
     document.body.className = theme;
   }, [theme]);
@@ -19,14 +18,12 @@ function App() {
     if (!input.trim() || loading) return;
 
     const userMsg = { role: "user", text: input };
-    const updatedHistory = [...messages, userMsg];
-
-    setMessages(updatedHistory);
+    setMessages((prev) => [...prev, userMsg]);
     setInput("");
     setLoading(true);
 
     try {
-      const data = await sendMessage(input, updatedHistory);
+      const data = await sendMessage(input, messages);
 
       setMessages((prev) => [
         ...prev,
@@ -37,7 +34,7 @@ function App() {
             data.answer ||
             data.output ||
             data.content ||
-            "No response from server",
+            "No response",
         },
       ]);
     } catch (err) {
@@ -55,10 +52,10 @@ function App() {
       <div style={styles.header}>
         <h2>RAG Chatbot</h2>
         <button
+          style={styles.toggle}
           onClick={() =>
             setTheme((prev) => (prev === "dark" ? "light" : "dark"))
           }
-          style={styles.toggle}
         >
           {theme === "dark" ? "🌞 Light" : "🌙 Dark"}
         </button>
@@ -92,7 +89,6 @@ const styles = {
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
-    borderBottom: "1px solid var(--border)",
   },
   toggle: {
     padding: "6px 12px",

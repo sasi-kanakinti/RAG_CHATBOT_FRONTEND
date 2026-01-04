@@ -1,4 +1,5 @@
 //@ts-nocheck
+
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 export async function sendMessage(query, history) {
@@ -14,9 +15,9 @@ export async function sendMessage(query, history) {
     });
 
     if (!response.ok) {
-        throw new Error("API request failed");
+    throw new Error("API request failed");
     }
 
     const data = await response.json();
-    return data; // return full object, NOT only data.response
+    return data;
 }
