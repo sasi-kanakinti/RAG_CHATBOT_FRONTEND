@@ -1,0 +1,66 @@
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+/* Theme variables */
+:root {
+  --bg-main: #121212;
+  --bg-panel: #1e1e1e;
+  --bg-input: #2a2a2a;
+  --text-main: #f5f5f5;
+  --text-muted: #888;
+  --border: #444;
+  --user-bubble: #dcf8c6;
+  --assistant-bubble: #2e2e2e;
+  --button: #4f8cff;
+}
+
+.light {
+  --bg-main: #f3f4f6;          /* page background (off-white) */
+  --bg-panel: #ffffff;        /* chat card */
+  --bg-input: #ffffff;
+  --text-main: #111827;       /* near-black text */
+  --text-muted: #6b7280;      /* muted gray */
+  --border: #e5e7eb;          /* soft border */
+  --user-bubble: #dcf8c6;
+  --assistant-bubble: #f9fafb;
+  --button: #2563eb;
+}
+
+
+.app-wrapper {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  background-color: var(--bg-main);
+}
+
+/* ===== Chat Card (Light vs Dark) ===== */
+
+.light .chat-card {
+  box-shadow:
+    0 1px 2px rgba(0,0,0,0.08),
+    0 8px 24px rgba(0,0,0,0.06);
+  border: none;
+}
+
+.dark .chat-card {
+  border: 1px solid var(--border);
+  box-shadow: none;
+}
+
+/* ===== Input Card ===== */
+
+.light .input-card {
+  box-shadow:
+    0 1px 2px rgba(0,0,0,0.08),
+    0 8px 24px rgba(0,0,0,0.06);
+  border: none;
+}
+
+.dark .input-card {
+  border: 1px solid var(--border);
+  border-top: none;
+}
